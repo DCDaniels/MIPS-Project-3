@@ -21,7 +21,11 @@ main:
 	li $t2,4				#Stored to check if variable is greater than 4
 	li $t3,32				#Stored a space in $t3 to check for spaces
 	li $t4,9				#Stored to check for tabs
-	la $t1,InputVariable			#Load the variable to the register $t1
-	li $t2,4				#Stored to check if variable is greater than 4
-	li $t3,32				#Stored a space in $t3 to check for spaces
-	li $t4,9				#Stored to check for tabs
+	li $t0,0				#Variable initialized to 0
+	li $s0,48				#For lowest valid non letter input option
+	li $s1,57				#For highest valid non letter input option
+	li $s2,65				#For lowest capital letter
+	li $s3,89				#For highest capital letter (I go to Y not Z)
+	li $s4,97				#For lowest common letter
+	li $s5,121				#For highest common letter (I go to y not z)
+	li $a3,0				#Initialized for sum
