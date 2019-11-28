@@ -66,8 +66,20 @@ main:
 		bgt $t7, $s1, invalid_substring 
 		addi $t3, $t3, 1
 		
+		
+	invalid_substring:
+		li $v0, 4
+		la $a0, BadInput #prints "NaN"
+		syscall
+		
+		
 	LSubstring: 				#Checks the last substring		
 		lw $ra, 0($sp) 			#Loads the return address
 		jr $ra 				#Returns to last call
 		
+		
+	nextSubstring:
+		li $a0, ','
+		li $v0, 11 #prints ","
+		syscall	
 		
