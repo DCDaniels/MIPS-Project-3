@@ -110,4 +110,11 @@ main:
 	not_a_space:
 		bne $t4, $t9, invalid_substring 
 		j skip_trailing_tab_or_space 
+	
+		
+	validSubstring:
+		li $a0, 35 
+		sub $s0, $s0, $t7
+		sw $s0, 8($sp) 
+		add $a1, $t7, $zero 
 		
