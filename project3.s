@@ -44,3 +44,7 @@ main:
 	beq $t6,$t4, skip_character		#Branches if character is a tab
 	j check_character			#Jump to check_character
 	
+	skip_character:				#Function that moves to next character
+	addi $t1,$t1, 1				#Increments $t1 to check next number
+	j loop					#Jumps back to beginning of loop
+	
