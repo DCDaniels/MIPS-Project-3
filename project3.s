@@ -118,3 +118,5 @@ main:
 		sw $s0, 8($sp) 
 		add $a1, $t7, $zero 
 		
+		jal convertSubstring 
+		j nextSubstring
