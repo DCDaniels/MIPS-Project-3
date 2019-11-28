@@ -34,5 +34,10 @@ main:
 		li $t4, 0x0A			#Loads a newline
 		li $t6, 0			#Length of substring
 	
+	loop: 					#Loop to parse each substring
+		lb $t5, 0($t3)			#Gets one byte and loads it
+		beq $t5, $t4, lastSubstring 	#Branch if newline
+		beq $t5, $t1, parseSubstring 	#Branch if commma
+		
 	
 	
