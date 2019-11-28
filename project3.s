@@ -29,3 +29,4 @@ main:
 	li $s4,97				#For lowest common letter
 	li $s5,121				#For highest common letter (I go to y not z)
 	li $a3,0				#Initialized for sum
+	li $s7, 0x0A				#Stored a new line
