@@ -36,8 +36,21 @@ main:
 	
 	loop: 					#Loop to parse each substring
 		lb $t5, 0($t3)			#Gets one byte and loads it
-		beq $t5, $t4, lastSubstring 	#Branch if newline
-		beq $t5, $t1, parseSubstring 	#Branch if commma
+		beq $t5, $t4, LSubstring 	#Branch if newline
+		beq $t5, $t1, PSubstring 	#Branch if commma
+		addi $t6, $t6, 1		#Increments the length of substring
+		addi $t3, $t3, 1		#Increments the address of the word
+		j loop				#Go to start of the loop again
 		
+	PSubstring:				#Parse the substrings
+		sub $t3, $t3, $t6		#Return the word address
+		li $t7, 0			#Check if leading
+		li $t8, 32			#Loads a space
+		li $t9, 9			#Loads a tab
+		li $s1, 4			#Loads the max amount of characters
+		li $s2, 0			#Loads a counter for the anumber of characters
+		
+	LoopTwo:
+		beq $t6, $s2, 
 	
 	
