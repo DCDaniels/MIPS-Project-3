@@ -83,3 +83,14 @@ main:
 		li $v0, 11 #prints ","
 		syscall	
 		
+		add $t3, $t3, $t6
+		addi $t3, $t3, 1 
+		add $t6, $zero, $zero
+		j loop
+		
+	leading_chars: 
+		beq $t5, $t8, skip_leading_tab_or_space
+		beq $t5, $t9, skip_leading_tab_or_space
+		j parseStringHelper
+	
+		
