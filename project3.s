@@ -39,3 +39,8 @@ main:
 	syscall					#Issues a System Call
 	
 	
+	beginning_characters:			#Function that checks if character is a space or tab
+	beq $t6,$t3, skip_character		#Branches if character is a space
+	beq $t6,$t4, skip_character		#Branches if character is a tab
+	j check_character			#Jump to check_character
+	
