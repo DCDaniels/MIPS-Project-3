@@ -17,6 +17,7 @@ main:
 	li $v0, 8				#Allows user to input
 	la $a0, InputVariable			#Saves input to  variable
 	li $a1, 1002				#Allows the input to be 1000 characters
+	la $s0, SubString 			#Load the address of the list
 	syscall 				#Issues a System Call
 	
 	
