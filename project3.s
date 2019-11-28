@@ -92,5 +92,10 @@ main:
 		beq $t5, $t8, skip_leading_tab_or_space
 		beq $t5, $t9, skip_leading_tab_or_space
 		j parseStringHelper
+		
+	
+	skip_leading_tab_or_space: 
+		addi $t3, $t3, 1
+		j LoopTwo
 	
 		
