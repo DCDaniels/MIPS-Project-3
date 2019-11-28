@@ -51,10 +51,14 @@ main:
 		li $s2, 0			#Loads a counter for the anumber of characters
 		
 	LoopTwo:
-		beq $t6, $s2, 
-	
+		beq $t6, $s2, VSubstring 
+		lb $t5, 0($t3) 			#Loads piece of the word
+		addi $s2, $s2, 1 		#Increments counter
+		beq $t7, $zero, leads 	#Branches if possible leading character
 	
 	
 	LSubstring: 				#Checks the last substring		
 		lw $ra, 0($sp) 			#Loads the return address
 		jr $ra 				#Returns to last call
+		
+		
