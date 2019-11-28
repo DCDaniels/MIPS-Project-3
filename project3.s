@@ -98,4 +98,11 @@ main:
 		addi $t3, $t3, 1
 		j LoopTwo
 	
+	
+	skip_trailing_tab_or_space: #checks if the rest of the substring tabs and spaces
+		addi $t3, $t3, 1 #move to the next byte
+		lb $t5, 0($t3)  #gets a character of the string
+		beq $t5, $t1, validSubstring #branches if only trailing tabs are spaces are found before newline
+		bne $t4, $t8, not_a_space #branches if character is not a space
+		j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 		
