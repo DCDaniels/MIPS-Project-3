@@ -14,7 +14,7 @@ BadInput: .asciiz "NaN"		#Variable used to output Invalid input
 main:
 	li $v0, 8				#Allows user to input
 	la $a0, InputVariable			#Saves input to  variable
-	li $a1, 1001				#Allows the input to be 1000 characters
+	li $a1, 1002				#Allows the input to be 1000 characters
 	syscall 				#Issues a System Call
 	
 	la $t1,InputVariable			#Load the variable to the register $t1
