@@ -26,7 +26,13 @@ main:
 	
 	jal StringProcessor			#Jump to the first subprogram A
 	
-	StringProcessor:			
+	StringProcessor:			#First subprogram that accepts all the strings and make it substrings
+		sw $ra, 0($sp)			#Store return address
+		li $t1, 44			#Loads a comma
+		lw $t2, 4($sp)			#Loads the user input
+		la $t3, ($t2)			#Loads the address of the input string
+		li $t4, 0x0A			#Loads a newline
+		li $t6, 0			#Length of substring
 	
 	loop:
 		bgt $t5,$t2, output_bad_input		#Branch if more than 4 good characters
