@@ -54,4 +54,9 @@ main:
 	addi $t6,$t6, -48			#Convert it to its decimal counterpart
 	j incrementor				#Jump to incrementor function
 	
-	
+	incrementor:				#Function to increment all variables
+	sb $t6, 0($s6)		 		#Stores the character in a string
+	addi $s6,$s6, 1 			#Increment array posistion
+	addi $t1,$t1, 1 			#Increment the input string
+	addi $t5,$t5, 1 			#Increment the number of valid characters
+	j loop					#Go back to loop
