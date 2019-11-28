@@ -122,3 +122,8 @@ main:
 		j nextSubstring
 		
 	
+	convertSubstring: 
+		sw $ra, 12($sp) 
+		lw $s3, 8($sp) 
+		lb $t5, 0($s3) 
+		
