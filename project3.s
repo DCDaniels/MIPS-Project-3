@@ -31,8 +31,11 @@ main:
 	li $a3,0				#Initialized for sum
 	li $s7, 0x0A				#Stored a new line
 	
-
-
+	loop:
+		bgt $t5,$t2, output_bad_input		#Branch if more than 4 good characters
+		lb $t6,0($t1)				#Gets each integer from the input
+		j check_character			#Jump to check character function if it doesnt branch
+	
 	output_bad_input:			#Fucntion to print invalid output
 	li $v0,4
 	la $a0, BadInput			#Prints Invalid input
