@@ -31,4 +31,11 @@ main:
 	li $a3,0				#Initialized for sum
 	li $s7, 0x0A				#Stored a new line
 	
+
+
+	output_bad_input:			#Fucntion to print invalid output
+	li $v0,4
+	la $a0, BadInput			#Prints Invalid input
+	syscall					#Issues a System Call
+	
 	
