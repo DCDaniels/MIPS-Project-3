@@ -35,3 +35,4 @@ main:
 		li $t6, 0			#Length of substring
 	
 	
+	
