@@ -48,3 +48,10 @@ main:
 	addi $t1,$t1, 1				#Increments $t1 to check next number
 	j loop					#Jumps back to beginning of loop
 	
+	check_character:			#Function to see if character is invalid
+	blt $t6,$s0, output_bad_input		#Branch if character is below ASCII number for 0
+	bgt $t6,$s1, check_capital		#Branch if character is above ASCII number for 9
+	addi $t6,$t6, -48			#Convert it to its decimal counterpart
+	j incrementor				#Jump to incrementor function
+	
+	
