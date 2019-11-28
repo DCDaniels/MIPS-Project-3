@@ -17,4 +17,11 @@ main:
 	li $a1, 1001				#Allows the input to be 1000 characters
 	syscall 				#Issues a System Call
 	
-	
+	la $t1,InputVariable			#Load the variable to the register $t1
+	li $t2,4				#Stored to check if variable is greater than 4
+	li $t3,32				#Stored a space in $t3 to check for spaces
+	li $t4,9				#Stored to check for tabs
+	la $t1,InputVariable			#Load the variable to the register $t1
+	li $t2,4				#Stored to check if variable is greater than 4
+	li $t3,32				#Stored a space in $t3 to check for spaces
+	li $t4,9				#Stored to check for tabs
