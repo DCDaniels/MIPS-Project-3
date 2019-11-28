@@ -57,6 +57,15 @@ main:
 		beq $t7, $zero, leads 	#Branches if possible leading character
 	
 	
+	PStringAssister:
+		beq $t5, $t8, skip_trailing_tab_or_space
+		beq $t5, $t9, skip_trailing_tab_or_space
+		addi $t7, $t7, 1 
+		sb $t5, 0($s0) 	
+		addi $s0, $s0, 1 
+		bgt $t7, $s1, invalid_substring 
+		addi $t3, $t3, 1
+		
 	LSubstring: 				#Checks the last substring		
 		lw $ra, 0($sp) 			#Loads the return address
 		jr $ra 				#Returns to last call
