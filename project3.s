@@ -54,3 +54,7 @@ main:
 		beq $t6, $s2, 
 	
 	
+	
+	LSubstring: 				#Checks the last substring		
+		lw $ra, 0($sp) 			#Loads the return address
+		jr $ra 				#Returns to last call
