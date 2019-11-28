@@ -7,3 +7,8 @@
 InputVariable: .space 1000			#Variable for user input 
 list: .word 0, 0, 0, 0				#Created a word list
 BadInput: .asciiz "Invalid input"		#Variable used to output Invalid input
+
+.text						#Instructions stored in text segment at next available address
+.globl main					#Allows main to be refrenced anywhere
+
+
