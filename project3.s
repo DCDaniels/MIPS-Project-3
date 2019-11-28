@@ -20,7 +20,13 @@ main:
 	la $s0, SubString 			#Load the address of the list
 	syscall 				#Issues a System Call
 	
+	lw $t0, InputVariable			#Loads the word in $t0
+	sub $sp, $sp, 12			#Moves the pointer for stacks
+	sw $t0, 4($sp)				#Adds the input string to the word
 	
+	jal StringProcessor			#Jump to the first subprogram A
+	
+	StringProcessor:			
 	
 	loop:
 		bgt $t5,$t2, output_bad_input		#Branch if more than 4 good characters
