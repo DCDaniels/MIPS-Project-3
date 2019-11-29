@@ -126,11 +126,15 @@ main:
 		li $v0, 1
 		move $a0, $t7
 		syscall
+		add $s4, $zero, 4zero
 		j Move_to_next_Substring
 	
 	
-	Convert_Loop:	
+	Convert_Substring:
+		sw $ra, 12($sp)
+		lw $s3, 8($sp)
 	
+	Convert_Loop:	
 		lb $t5, 0($s3)
 		li $t7, 48 
 		li $t8, 57 
