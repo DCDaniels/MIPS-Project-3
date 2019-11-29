@@ -129,25 +129,29 @@ main:
 		li $s0, 89 
 		li $s1, 97 
 		li $s2, 121 
-		blt $t4, $s4, print_invalid_input 
+		blt $t4, $s4, Invalid_Output 
 		bgt $t4, $s5, not_a_digit 
 		addi $t4, $t4, -55
 		
 	Convert_Byte_Helper:			
 		lb $a0, $t4
 		jal Conversion_to_Byte
-		add 
+		add $s4, $s4, $v0 #adds the amount for that digit to the total
+		addi $s3, $s3, 1 #increments the address
+		addi $a1, $a1, -1 #decrements the character position
+		beq $a1, $zero, End
+		j loopConvert
 		
-		print_invalid_input:
+		Invalid_Output:
 			addi $v0, $zero, -1  
-			j returnToNextSubstring
+			j Return
 		
 		not_a_digit:
 		
-		endSubstring:
+		End:
 			add $v0, $s4, $zero
 		
-		returnToNextSubstring:
+		Return:
 			lw $ra, 12($sp) #loading the return value register
 			jr $ra
 		
@@ -156,10 +160,10 @@ Conversion_to_Byte:
 	li $t8, 2
 	li $t9, 3
 	li $s1, 46
-	beq $a2, $s1,Four 
-	beq $a2, $t9,Three 
-	beq $a2, $t8,Two 
-	beq $a2, $t7,One
+	beq $a1, $s1,Four #branch if there are 4 characters
+	beq $a1, $t9,Three #branch if there are 3 characters
+	beq $a1, $t8,Two #branch if there are 2 valid characters
+	beq $a1, $t7,One #branch if there is one valid character
 		
 
 	Four:
