@@ -102,7 +102,7 @@ main:
 	Trailing: 
 		addi $t3, $t3, 1 
 		lb $t5, 0($t3)  
-		beq $t5, $t1, validSubstring 
+		beq $t5, $t1, Good_Strings 
 		bne $t4, $t8, Not_Space 
 		j Trailing 
 		
@@ -112,7 +112,7 @@ main:
 		j Trailing 
 	
 		
-	validSubstring:
+	Good_Strings:
 		li $a0, 35 
 		sub $s0, $s0, $t7
 		sw $s0, 8($sp) 
