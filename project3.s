@@ -122,15 +122,26 @@ main:
 		j Move_to_next_Substring
 		
 	
-	Substring_Conversion: 
-		sw $ra, 12($sp) 
-		lw $s3, 8($sp) 
-		lb $t5, 0($s3) 
-		li $t7, 48 
-		li $t8, 57 
-		li $t9, 65 
-		li $s0, 89 
-		li $s1, 97 
-		li $s2, 121 
-		blt $t4, $s4, print_invalid_input 
-		bgt $t4, $s5, not_a_digit 
+Substring_Conversion: 
+	sw $ra, 12($sp) 
+	lw $s3, 8($sp) 
+	lb $t5, 0($s3) 
+	li $t7, 48 
+	li $t8, 57 
+	li $t9, 65 
+	li $s0, 89 
+	li $s1, 97 
+	li $s2, 121 
+	blt $t4, $s4, print_invalid_input 
+	bgt $t4, $s5, not_a_digit 
+	addi $t4, $t4, -55	
+	lb $a0, $t4
+	jal Conversion_to_Byte
+		
+		not_a_digit:
+		
+Conversion_to_Byte:
+	
+		
+
+		
