@@ -126,4 +126,7 @@ main:
 		sw $ra, 12($sp) 
 		lw $s3, 8($sp) 
 		lb $t5, 0($s3) 
-		
+		li $t7, 48 
+		li $t8, 57 
+		li $t9, 65 
+		li $s0, 89 
