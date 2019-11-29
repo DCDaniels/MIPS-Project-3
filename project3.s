@@ -157,6 +157,7 @@ Conversion_to_Byte:
 	mflo $v0
 	jr $ra
 	
+	
 	Three:
 	li $t9, 1225
 	multu $t9, $a0 
