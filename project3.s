@@ -151,4 +151,11 @@ Conversion_to_Byte:
 	beq $a2, $t7,one_valid_char
 		
 
+	four_valid_chars:
+	li $t9, 42875
+	multu $t9, $a0 
+	mflo $v0
+	jr $ra
+	
+	
 		
