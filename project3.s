@@ -34,13 +34,13 @@ main:
 		li $t4, 0x0A			#Loads a newline
 		li $t6, 0			#Length of substring
 	
-	loop: 					#Loop to parse each substring
+	Loop: 					#Loop to parse each substring
 		lb $t5, 0($t3)			#Gets one byte and loads it
 		beq $t5, $t4, LSubstring 	#Branch if newline
 		beq $t5, $t1, PSubstring 	#Branch if commma
 		addi $t6, $t6, 1		#Increments the length of substring
 		addi $t3, $t3, 1		#Increments the address of the word
-		j loop				#Go to start of the loop again
+		j Loop				#Go to start of the Loop again
 		
 	PSubstring:				#Parse the substrings
 		sub $t3, $t3, $t6		#Return the word address
@@ -69,7 +69,7 @@ main:
 		
 	Bad_Substring:
 		li $v0, 4
-		la $a0, BadInput #prints "NaN"
+		la $a0, BadInput 		#prints "NaN"
 		syscall
 		
 		
@@ -78,15 +78,15 @@ main:
 		jr $ra 				#Returns to last call
 		
 		
-	nextSubstring:
+	Move_to_next_Substring:
 		li $a0, ','
-		li $v0, 11 #prints ","
+		li $v0, 11 			#prints ","
 		syscall	
 		
 		add $t3, $t3, $t6
 		addi $t3, $t3, 1 
 		add $t6, $zero, $zero
-		j loop
+		j Loop
 		
 	Leads: 
 		beq $t5, $t8, Leading
@@ -118,11 +118,11 @@ main:
 		sw $s0, 8($sp) 
 		add $a1, $t7, $zero 
 		
-		jal convertSubstring 
-		j nextSubstring
+		jal Substring_Conversion 
+		j Move_to_next_Substring
 		
 	
-	convertSubstring: 
+	Substring_Conversion: 
 		sw $ra, 12($sp) 
 		lw $s3, 8($sp) 
 		lb $t5, 0($s3) 
