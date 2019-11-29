@@ -130,3 +130,7 @@ main:
 		li $t8, 57 
 		li $t9, 65 
 		li $s0, 89 
+		li $s1, 97 
+		li $s2, 121 
+		blt $t4, $s4, print_invalid_input 
+		bgt $t4, $s5, not_a_digit 
