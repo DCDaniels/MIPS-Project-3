@@ -157,5 +157,15 @@ Conversion_to_Byte:
 	mflo $v0
 	jr $ra
 	
+	three_valid_chars:
+	li $t9, 1225
+	multu $t9, $a0 
+	mflo $v0 
+	jr $ra
 	
-		
+	
+	two_valid_chars:
+	li $t9, 35
+	multu $t9, $a0 
+	mflo $v0 
+	jr $ra	
