@@ -145,33 +145,33 @@ Conversion_to_Byte:
 	li $t8, 2
 	li $t9, 3
 	li $s1, 46
-	beq $a2, $s1,four_valid_chars 
-	beq $a2, $t9,three_valid_chars 
-	beq $a2, $t8,two_valid_chars 
-	beq $a2, $t7,one_valid_char
+	beq $a2, $s1,Four 
+	beq $a2, $t9,Three 
+	beq $a2, $t8,Two 
+	beq $a2, $t7,One
 		
 
-	four_valid_chars:
+	Four:
 	li $t9, 42875
 	multu $t9, $a0 
 	mflo $v0
 	jr $ra
 	
-	three_valid_chars:
+	Three:
 	li $t9, 1225
 	multu $t9, $a0 
 	mflo $v0 
 	jr $ra
 	
 	
-	two_valid_chars:
+	Two:
 	li $t9, 35
 	multu $t9, $a0 
 	mflo $v0 
 	jr $ra	
 	
 	
-	one_valid_char:
+	One:
 	li $t9, 1
 	multu $t9, $a0 
 	mflo $v0 
