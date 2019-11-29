@@ -169,3 +169,10 @@ Conversion_to_Byte:
 	multu $t9, $a0 
 	mflo $v0 
 	jr $ra	
+	
+	
+	one_valid_char:
+	li $t9, 1
+	multu $t9, $a0 
+	mflo $v0 
+	jr $ra
