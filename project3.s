@@ -123,15 +123,17 @@ main:
 	
 	
 	Convert_Loop:	
+	
+		lb $t5, 0($s3)
 		li $t7, 48 
 		li $t8, 57 
 		li $t9, 65 
 		li $s0, 89 
 		li $s1, 97 
 		li $s2, 121 
-		blt $t4, $s4, Invalid_Output 
-		bgt $t4, $s5, not_a_digit 
-		addi $t4, $t4, -55
+		blt $t5, $t7, Invalid_Output #breaks if ascii of character is < 48
+		bgt $t5, $t8, not_a_digit #breaks if ascii of character is > 57
+		addi $t5, $t5, -48
 		
 	Convert_Byte_Helper:			
 		lb $a0, $t4
@@ -140,26 +142,36 @@ main:
 		addi $s3, $s3, 1 #increments the address
 		addi $a1, $a1, -1 #decrements the character position
 		beq $a1, $zero, End
-		j loopConvert
+		j Convert_Loop
 		
 		Invalid_Output:
 			addi $v0, $zero, -1  
 			j Return
 		
-		not_a_digit:
+	not_a_digit:
+		blt $t5, $t9, print_invalid_input #breaks if ascii of character is < 65
+		bgt $t5, $s5, not_a_capital_letter #breaks if ascii of character is > 89
+		addi $t5, $t5, -55 #makes the ascii for digit align with capital letters
+		j convertByteHelper
 		
-		End:
-			add $v0, $s4, $zero
+	not_a_capital_letter:
+		blt $t5, $s1, print_invalid_input #breaks if ascii of character is < 97
+		bgt $t5, $s2, print_invalid_input #breaks if ascii of character is > 121
+		addi $t5, $t5, -87 #makes the ascii for digit align with common letters
+		j convertByteHelper
 		
-		Return:
-			lw $ra, 12($sp) #loading the return value register
-			jr $ra
+	End:
+		add $v0, $s4, $zero
+		
+	Return:
+		lw $ra, 12($sp) #loading the return value register
+		jr $ra
 		
 Conversion_to_Byte:
 	li $t7, 1
 	li $t8, 2
 	li $t9, 3
-	li $s1, 46
+	li $s1, 4
 	beq $a1, $s1,Four #branch if there are 4 characters
 	beq $a1, $t9,Three #branch if there are 3 characters
 	beq $a1, $t8,Two #branch if there are 2 valid characters
