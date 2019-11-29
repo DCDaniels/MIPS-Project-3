@@ -144,8 +144,11 @@ Conversion_to_Byte:
 	li $t7, 1
 	li $t8, 2
 	li $t9, 3
-	li $s1, 4
-	beq
+	li $s1, 46
+	beq $a2, $s1,four_valid_chars 
+	beq $a2, $t9,three_valid_chars 
+	beq $a2, $t8,two_valid_chars 
+	beq $a2, $t7,one_valid_char
 		
 
 		
