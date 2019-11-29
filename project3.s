@@ -81,7 +81,6 @@ main:
 		li $v0, 11 			#prints ","
 		syscall	
 		
-		add $t3, $t3, $t6
 		addi $t3, $t3, 1 
 		add $t6, $zero, $zero
 		j Loop
@@ -101,12 +100,12 @@ main:
 		addi $t3, $t3, 1 
 		lb $t5, 0($t3)  
 		beq $t5, $t1, Good_Strings 
-		bne $t4, $t8, Not_Space 
+		bne $t5, $t8, Not_Space 
 		j Trailing 
 		
 	
 	Not_Space:
-		bne $t4, $t9, Bad_Substring
+		bne $t5, $t9, Bad_Substring
 		j Trailing 
 		
 	
@@ -122,7 +121,12 @@ main:
 		add $a1, $t7, $zero 
 		
 		jal Substring_Conversion 
-		j Move 
+		blt $v0, $zero,Invalid_Output 
+		add $t7, $v0, $zero
+		li $v0, 1
+		move $a0, $t7
+		syscall
+		j Move_to_next_Substring
 	
 	
 	Convert_Loop:	
@@ -147,9 +151,9 @@ main:
 		beq $a1, $zero, End
 		j Convert_Loop
 		
-		Invalid_Output:
-			addi $v0, $zero, -1  
-			j Return
+	Invalid_Output:
+		addi $v0, $zero, -1  
+		j Return
 		
 	not_a_digit:
 		blt $t5, $t9, print_invalid_input #breaks if ascii of character is < 65
