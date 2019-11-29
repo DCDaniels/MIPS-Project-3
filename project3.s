@@ -53,7 +53,7 @@ main:
 		li $s2, 0			#Loads a counter for the anumber of characters
 		
 	LoopTwo:
-		beq $t6, $s2, VSubstring 
+		beq $t6, $s2, SubString 
 		lb $t5, 0($t3) 			#Loads piece of the word
 		addi $s2, $s2, 1 		#Increments counter
 		beq $t7, $zero, Leads 	#Branches if possible leading character
@@ -120,13 +120,13 @@ main:
 		sw $s0, 8($sp) 
 		add $a1, $t7, $zero 
 		
-		jal Substring_Conversion 
+		jal Convert_Substring 
 		blt $v0, $zero,Invalid_Output 
 		add $t7, $v0, $zero
 		li $v0, 1
 		move $a0, $t7
 		syscall
-		add $s4, $zero, 4zero
+		add $s4, $zero, $zero
 		j Move_to_next_Substring
 	
 	
@@ -169,7 +169,7 @@ main:
 		blt $t5, $s1, Invalid_Output #breaks if ascii of character is < 97
 		bgt $t5, $s2, Invalid_Output #breaks if ascii of character is > 121
 		addi $t5, $t5, -87 #makes the ascii for digit align with common letters
-		j convertByteHelper
+		j Convert_Byte_Helper
 		
 	End:
 		add $v0, $s4, $zero
