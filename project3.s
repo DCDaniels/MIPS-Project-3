@@ -58,16 +58,16 @@ main:
 	
 	
 	PStringAssister:
-		beq $t5, $t8, skip_trailing_tab_or_space
-		beq $t5, $t9, skip_trailing_tab_or_space
+		beq $t5, $t8, Trailing
+		beq $t5, $t9, Trailing
 		addi $t7, $t7, 1 
 		sb $t5, 0($s0) 	
 		addi $s0, $s0, 1 
-		bgt $t7, $s1, invalid_substring 
+		bgt $t7, $s1, Bad_Substring
 		addi $t3, $t3, 1
 		
 		
-	invalid_substring:
+	Bad_Substring:
 		li $v0, 4
 		la $a0, BadInput #prints "NaN"
 		syscall
@@ -88,28 +88,28 @@ main:
 		add $t6, $zero, $zero
 		j loop
 		
-	leading_chars: 
-		beq $t5, $t8, skip_leading_tab_or_space
-		beq $t5, $t9, skip_leading_tab_or_space
+	leads: 
+		beq $t5, $t8, Leading
+		beq $t5, $t9, Leading
 		j parseStringHelper
 		
 	
-	skip_leading_tab_or_space: 
+	Leading: 
 		addi $t3, $t3, 1
 		j LoopTwo
 	
 	
-	skip_trailing_tab_or_space: 
+	Trailing: 
 		addi $t3, $t3, 1 
 		lb $t5, 0($t3)  
 		beq $t5, $t1, validSubstring 
 		bne $t4, $t8, not_a_space 
-		j skip_trailing_tab_or_space 
+		j Trailing 
 		
 	
 	not_a_space:
-		bne $t4, $t9, invalid_substring 
-		j skip_trailing_tab_or_space 
+		bne $t4, $t9, Bad_Substring
+		j Trailing 
 	
 		
 	validSubstring:
