@@ -119,13 +119,8 @@ main:
 		add $a1, $t7, $zero 
 		
 		jal Substring_Conversion 
-		j Move_to_next_Substring
-		
-	
-Substring_Conversion: 
-	sw $ra, 12($sp) 
-	lw $s3, 8($sp) 
-	lb $t5, 0($s3) 
+		j Move
+		3) 
 	li $t7, 48 
 	li $t8, 57 
 	li $t9, 65 
@@ -139,6 +134,13 @@ Substring_Conversion:
 	jal Conversion_to_Byte
 		
 		not_a_digit:
+		
+		endSubstring:
+			add $v0, $s4, $zero
+		
+		returnToNextSubstring:
+			lw $ra, 12($sp) #loading the return value register
+			jr $ra
 		
 Conversion_to_Byte:
 	li $t7, 1
