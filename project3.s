@@ -54,7 +54,7 @@ main:
 		beq $t6, $s2, VSubstring 
 		lb $t5, 0($t3) 			#Loads piece of the word
 		addi $s2, $s2, 1 		#Increments counter
-		beq $t7, $zero, leads 	#Branches if possible leading character
+		beq $t7, $zero, Leads 	#Branches if possible leading character
 	
 	
 	PStringAssister:
@@ -88,7 +88,7 @@ main:
 		add $t6, $zero, $zero
 		j loop
 		
-	leads: 
+	Leads: 
 		beq $t5, $t8, Leading
 		beq $t5, $t9, Leading
 		j PStringAssister
@@ -103,11 +103,11 @@ main:
 		addi $t3, $t3, 1 
 		lb $t5, 0($t3)  
 		beq $t5, $t1, validSubstring 
-		bne $t4, $t8, not_a_space 
+		bne $t4, $t8, Not_Space 
 		j Trailing 
 		
 	
-	not_a_space:
+	Not_Space:
 		bne $t4, $t9, Bad_Substring
 		j Trailing 
 	
