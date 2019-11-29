@@ -119,19 +119,28 @@ main:
 		add $a1, $t7, $zero 
 		
 		jal Substring_Conversion 
-		j Move
-		3) 
-	li $t7, 48 
-	li $t8, 57 
-	li $t9, 65 
-	li $s0, 89 
-	li $s1, 97 
-	li $s2, 121 
-	blt $t4, $s4, print_invalid_input 
-	bgt $t4, $s5, not_a_digit 
-	addi $t4, $t4, -55	
-	lb $a0, $t4
-	jal Conversion_to_Byte
+		j Move 
+	
+	
+	Convert_Loop:	
+		li $t7, 48 
+		li $t8, 57 
+		li $t9, 65 
+		li $s0, 89 
+		li $s1, 97 
+		li $s2, 121 
+		blt $t4, $s4, print_invalid_input 
+		bgt $t4, $s5, not_a_digit 
+		addi $t4, $t4, -55
+		
+	Convert_Byte_Helper:			
+		lb $a0, $t4
+		jal Conversion_to_Byte
+		add 
+		
+		print_invalid_input:
+			addi $v0, $zero, -1  
+			j returnToNextSubstring
 		
 		not_a_digit:
 		
