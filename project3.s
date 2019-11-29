@@ -143,11 +143,11 @@ main:
 		li $s1, 97 
 		li $s2, 121 
 		blt $t5, $t7, Invalid_Output #breaks if ascii of character is < 48
-		bgt $t5, $t8, not_a_digit #breaks if ascii of character is > 57
+		bgt $t5, $t8, Not_a_digit #breaks if ascii of character is > 57
 		addi $t5, $t5, -48
 		
 	Convert_Byte_Helper:			
-		lb $a0, $t4
+		add $a0, $t5, $zero
 		jal Conversion_to_Byte
 		add $s4, $s4, $v0 #adds the amount for that digit to the total
 		addi $s3, $s3, 1 #increments the address
@@ -159,15 +159,15 @@ main:
 		addi $v0, $zero, -1  
 		j Return
 		
-	not_a_digit:
-		blt $t5, $t9, print_invalid_input #breaks if ascii of character is < 65
-		bgt $t5, $s5, not_a_capital_letter #breaks if ascii of character is > 89
+	Not_a_digit:
+		blt $t5, $t9, Invalid_Output #breaks if ascii of character is < 65
+		bgt $t5, $s5, Not_Capital #breaks if ascii of character is > 89
 		addi $t5, $t5, -55 #makes the ascii for digit align with capital letters
-		j convertByteHelper
+		j Convert_Byte_Helper
 		
-	not_a_capital_letter:
-		blt $t5, $s1, print_invalid_input #breaks if ascii of character is < 97
-		bgt $t5, $s2, print_invalid_input #breaks if ascii of character is > 121
+	Not_Capital:
+		blt $t5, $s1, Invalid_Output #breaks if ascii of character is < 97
+		bgt $t5, $s2, Invalid_Output #breaks if ascii of character is > 121
 		addi $t5, $t5, -87 #makes the ascii for digit align with common letters
 		j convertByteHelper
 		
