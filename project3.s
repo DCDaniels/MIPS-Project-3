@@ -91,7 +91,7 @@ main:
 	leads: 
 		beq $t5, $t8, Leading
 		beq $t5, $t9, Leading
-		j parseStringHelper
+		j PStringAssister
 		
 	
 	Leading: 
