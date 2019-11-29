@@ -1,217 +1,226 @@
-#David Daniels
-#HU ID: @02884990
-#02884990%11 = 9
-#26 + 9 = Base 35
-#Range (0,y) and (0-Y)
+#02856918 % 11 = 9 Base 35
 
-.data 						#Declarations
-InputVariable: .space 3000			#Variable for user input 
-SubString: .word 0, 0, 0, 0			#Created a word list
-BadInput: .asciiz "NaN"				#Variable used to output Invalid input
+.data #section to declare data
+user_input: .space 2000 # creating space for the user input
+invalid: .asciiz "NaN" #creating the error message for incorrect input
+subString: .word 0, 0, 0, 0 #initialize a word list
 
-.text						#Instructions stored in text segment at next available address
-.globl main					#Allows main to be refrenced anywhere
+.text #Assembly language instruction
 
-main:
-	li $v0, 8				#Allows user to input
-	la $a0, InputVariable			#Saves input to  variable
-	li $a1, 1002				#Allows the input to be 1000 characters
-	la $s0, SubString 			#Load the address of the list
-	syscall 				#Issues a System Call
+
+main: 
+
+	la $s0, subString #load the address of the list
 	
-	lw $t0, InputVariable			#Loads the word in $t0
-	sub $sp, $sp, 12			#Moves the pointer for stacks
-	sw $t0, 4($sp)				#Adds the input string to the word
-	
-	jal StringProcessor			#Jump to the first subprogram A
-	
-	li $v0, 10
+	li $v0, 8 #accepts user input
+	la $a0, user_input
+	li $a1, 1002 #specify the length of the input a person can enter
 	syscall
 	
-	StringProcessor:			#First subprogram that accepts all the strings and make it substrings
-		sw $ra, 0($sp)			#Store return address
-		li $t1, 44			#Loads a comma
-		lw $t2, 4($sp)			#Loads the user input
-		la $t3, ($t2)			#Loads the address of the input string
-		li $t4, 0x0A			#Loads a newline
-		li $t6, 0			#Length of substring
 	
-	Loop: 					#Loop to parse each substring
-		lb $t5, 0($t3)			#Gets one byte and loads it
-		beq $t5, $t4, LSubstring 	#Branch if newline
-		beq $t5, $t1, PSubstring 	#Branch if commma
-		addi $t6, $t6, 1		#Increments the length of substring
-		addi $t3, $t3, 1		#Increments the address of the word
-		j Loop				#Go to start of the Loop again
-		
-	PSubstring:				#Parse the substrings
-		sub $t3, $t3, $t6		#Return the word address
-		li $t7, 0			#Check if leading
-		li $t8, 32			#Loads a space
-		li $t9, 9			#Loads a tab
-		li $s1, 4			#Loads the max amount of characters
-		li $s2, 0			#Loads a counter for the anumber of characters
-		
-	LoopTwo:
-		beq $t6, $s2, SubString 
-		lb $t5, 0($t3) 			#Loads piece of the word
-		addi $s2, $s2, 1 		#Increments counter
-		beq $t7, $zero, Leads 	#Branches if possible leading character
+	lw $t0, user_input #loads the word in $t0
+	sub $sp, $sp, 12 #moves the pointer for stack
+	sw $t0, 4($sp) #adds the input string to the word
 	
 	
-	PStringAssister:
-		beq $t5, $t8, Trailing
-		beq $t5, $t9, Trailing
-		addi $t7, $t7, 1 
-		sb $t5, 0($s0) 	
-		addi $s0, $s0, 1 
-		bgt $t7, $s1, Bad_Substring
-		addi $t3, $t3, 1
-		j LoopTwo
+	jal processString #jumps to subprogram A
+	
+	
+	
+processString:   #subprogram A to accept all the string and make it substrings
+	
+	sw $ra, 0($sp) #stores the return address for the program
+	li $t1, 44 #loads a comma
+	lw $t2, 4($sp) #loads the user_input
+	la $t3, ($a0) #loads the address of the input string 
+	li $t4, 0x0A #loads a newline
+	li $t6, 0 #length of substring
+	
+	
+	
+	loop: #loop to parse each substring
+		
+		lb $t5, 0($t3)	#loads one byte of the word
+		beq $t5, $t4, lastSubstring #branches if the byte is equal to a newline
+		beq $t5, $t1, parseSubstring #branches if the byte is equal to a commma
+		addi $t6, $t6, 1 #increments the length of substring
+		addi $t3, $t3, 1 #increments the address of the word
+		j loop
+	
+	parseSubstring: #takes care of parsing the substring
+		sub $t3, $t3, $t6 #returns the word address to the first byte
+		li $t7, 0 #check if leading 
+		li $t8, 32 #loads a space
+		li $t9, 9 #loads a tab
+		li $s1, 4 #loads the max amount of characters
+		li $s2, 0 #loads a counter for the amount of characters in the substring
+		
+	loopTwo: 
+		
+		beq $t6, $s2, validSubstring #branches if all the substring is finished
+		lb $t5, 0($t3) #loads one byte of the word
+		addi $s2, $s2, 1 #increments the counter for numbers in substring
+		beq $t7, $zero, leading_chars #branch if byte could be leading
+		
+	parseStringHelper:
+		beq $t5, $t8, skip_trailing_tab_or_space
+		beq $t5, $t9, skip_trailing_tab_or_space
+		addi $t7, $t7, 1 #increments the amount of non-space or non-tab chars
+		sb $t5, 0($s0) #stores the char in a list
+		addi $s0, $s0, 1 #increments the word list
+		bgt $t7, $s1, invalid_substring #branches if amount of characters is more than 4
+		addi $t3, $t3, 1 #increments the address of the word
+		j loopTwo
 		
 		
-	Bad_Substring:
+	invalid_substring:
 		li $v0, 4
-		la $a0, BadInput 		#prints "NaN"
+		la $a0, invalid #prints "NaN"
 		syscall
-		
-			
-	Move_to_next_Substring:
+	
+	nextSubstring:
+		blt $a3, $zero, endProgram
 		li $a0, ','
-		li $v0, 11 			#prints ","
+		li $v0, 11 #prints ","
 		syscall	
 		
-		addi $t3, $t3, 1 
+		addi $t3, $t3, 1 #moves the address of the user input after the first substring
 		add $t6, $zero, $zero
-		j Loop
 		
-	Leads: 
-		beq $t5, $t8, Leading
-		beq $t5, $t9, Leading
-		j PStringAssister
+		j loop
 		
+	endProgram:
+	li $v0, 10
+	syscall  #tell the system this is the end of file
 	
-	Leading: 
+		
+	leading_chars: #checks if it is a leading space/tab
+		beq $t5, $t8, skip_leading_tab_or_space
+		beq $t5, $t9, skip_leading_tab_or_space
+		
+		j parseStringHelper
+		
+	skip_leading_tab_or_space: #increments char
 		addi $t3, $t3, 1
-		j LoopTwo
+		j loopTwo
 	
+	skip_trailing_tab_or_space: #checks if the rest of the substring tabs and spaces
+		addi $t3, $t3, 1 #move to the next byte
+		lb $t5, 0($t3)  #gets a character of the string
+		beq $t5, $t1, validSubstring #branches if only trailing tabs are spaces are found before newline
+		bne $t5, $t8, not_a_space #branches if character is not a space
+		j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 	
-	Trailing: 
-		addi $t3, $t3, 1 
-		lb $t5, 0($t3)  
-		beq $t5, $t1, Good_Strings 
-		bne $t5, $t8, Not_Space 
-		j Trailing 
+	not_a_space:
+		bne $t5, $t9, invalid_substring #if character after space for trailing is not a tab or space then print invalid
+		j skip_trailing_tab_or_space #returns to check the next character for trailing tab or space
+	
+	lastSubstring: #checks the final substring		
+		add $a3, $zero, -1
+		j parseSubstring
 		
-	
-	Not_Space:
-		bne $t5, $t9, Bad_Substring
-		j Trailing 
 		
-	
-	LSubstring: 				#Checks the last substring		
-		lw $ra, 0($sp) 			#Loads the return address
-		jr $ra 				#Returns to last call
-	
-		
-	Good_Strings:
-		li $a0, 35 
+	validSubstring:
+		li $a0, 35 #initialized the base number
 		sub $s0, $s0, $t7
-		sw $s0, 8($sp) 
-		add $a1, $t7, $zero 
+		sw $s0, 8($sp) #adds the substring of the 4 letters to the stack
+		add $a1, $t7, $zero #changes variable $t7 to and argument
 		
-		jal Convert_Substring 
-		blt $v0, $zero,Invalid_Output 
-		add $t7, $v0, $zero
+		jal convertSubstring #subprogram to convert to base 35
+		blt $v0, $zero, invalid_substring #prints error message for that substring
+		
+		add $t7, $v0, $zero #move the answer to a different variable
 		li $v0, 1
 		move $a0, $t7
-		syscall
-		add $s4, $zero, $zero
-		j Move_to_next_Substring
-	
-	
-	Convert_Substring:
-		sw $ra, 12($sp)
-		lw $s3, 8($sp)
-	
-	Convert_Loop:	
-		lb $t5, 0($s3)
-		li $t7, 48 
-		li $t8, 57 
-		li $t9, 65 
-		li $s0, 89 
-		li $s1, 97 
-		li $s2, 121 
-		blt $t5, $t7, Invalid_Output #breaks if ascii of character is < 48
-		bgt $t5, $t8, Not_a_digit #breaks if ascii of character is > 57
-		addi $t5, $t5, -48
+		syscall #prints the result of the decimal equivalent to the base 35 number
+		add $s4, $zero, $zero #reinitialize s4
+		j nextSubstring
 		
-	Convert_Byte_Helper:			
-		add $a0, $t5, $zero
-		jal Conversion_to_Byte
+convertSubstring: 
+	
+	sw $ra, 12($sp) #stores the return address in stack 
+	lw $s3, 8($sp) #gets the substring from stack
+	
+	loopConvert:
+	
+		lb $t5, 0($s3) #gets the first byte from the substring
+	
+		li $t7, 48 #lowest possible valid character ascii
+		li $t8, 57 #hightest possible non-letter digit ascii
+		li $t9, 65 #lowest possible capital letter ascii
+		li $s5, 89 #highest possible capital letter ascii # =Y since N = 35
+		li $s1, 97 #lowest possible common letter ascii 
+		li $s2, 121 #highest possible common letter ascii = y since N = 35
+	
+		blt $t5, $t7, print_invalid_input #breaks if ascii of character is < 48
+		bgt $t5, $t8, not_a_digit #breaks if ascii of character is > 57
+		addi $t5, $t5, -48 #makes the ascii digit align with capital letters
+		
+	
+	convertByteHelper:
+		add $a0, $t5, $zero #loads byte in a0 to be passed as an argument
+		
+		jal convertByte #subprogram to convert byte to base 35
 		add $s4, $s4, $v0 #adds the amount for that digit to the total
 		addi $s3, $s3, 1 #increments the address
 		addi $a1, $a1, -1 #decrements the character position
-		beq $a1, $zero, End
-		j Convert_Loop
+		beq $a1, $zero, endSubstring
+		j loopConvert
 		
-	Invalid_Output:
-		addi $v0, $zero, -1  
-		j Return
-		
-	Not_a_digit:
-		blt $t5, $t9, Invalid_Output #breaks if ascii of character is < 65
-		bgt $t5, $s5, Not_Capital #breaks if ascii of character is > 89
+	print_invalid_input:
+		addi $v0, $zero, -1 #sets the value of v0 to negative 
+		j returnToNextSubstring
+			
+	not_a_digit:
+		blt $t5, $t9, print_invalid_input #breaks if ascii of character is < 65
+		bgt $t5, $s5, not_a_capital_letter #breaks if ascii of character is > 89
 		addi $t5, $t5, -55 #makes the ascii for digit align with capital letters
-		j Convert_Byte_Helper
+		j convertByteHelper
 		
-	Not_Capital:
-		blt $t5, $s1, Invalid_Output #breaks if ascii of character is < 97
-		bgt $t5, $s2, Invalid_Output #breaks if ascii of character is > 121
+	not_a_capital_letter:
+		blt $t5, $s1, print_invalid_input #breaks if ascii of character is < 97
+		bgt $t5, $s2, print_invalid_input #breaks if ascii of character is > 121
 		addi $t5, $t5, -87 #makes the ascii for digit align with common letters
-		j Convert_Byte_Helper
+		j convertByteHelper
+	
+	endSubstring:
+		add $v0, $s4, $zero #puts the converted substring in the return variable
 		
-	End:
-		add $v0, $s4, $zero
-		
-	Return:
+	returnToNextSubstring:
 		lw $ra, 12($sp) #loading the return value register
 		jr $ra
 		
-Conversion_to_Byte:
+		
+convertByte:
 	li $t7, 1
 	li $t8, 2
 	li $t9, 3
 	li $s1, 4
-	beq $a1, $s1,Four #branch if there are 4 characters
-	beq $a1, $t9,Three #branch if there are 3 characters
-	beq $a1, $t8,Two #branch if there are 2 valid characters
-	beq $a1, $t7,One #branch if there is one valid character
-		
-
-	Four:
+	beq $a1, $s1,four_valid_chars #branch if there are 4 characters
+	beq $a1, $t9,three_valid_chars #branch if there are 3 characters
+	beq $a1, $t8,two_valid_chars #branch if there are 2 valid characters
+	beq $a1, $t7,one_valid_char #branch if there is one valid character
+	
+	four_valid_chars:
 	li $t9, 42875
-	multu $t9, $a0 
-	mflo $v0
+	multu $t9, $a0 #multiplying the character by the base number to a specific power
+	mflo $v0 #moves the answer to a register to be passed back to the function
 	jr $ra
 	
-	
-	Three:
+	three_valid_chars:
 	li $t9, 1225
-	multu $t9, $a0 
-	mflo $v0 
+	multu $t9, $a0 #multiplying the character by the base number to a specific power
+	mflo $v0 #moves the answer to a register to be passed back to the function
 	jr $ra
 	
-	
-	Two:
+	two_valid_chars:
 	li $t9, 35
-	multu $t9, $a0 
-	mflo $v0 
-	jr $ra	
+	multu $t9, $a0 #multiplying the character by the base number to a specific power
+	mflo $v0 #moves the answer to a register to be passed back to the function
+	jr $ra
 	
-	
-	One:
+	one_valid_char:
 	li $t9, 1
-	multu $t9, $a0 
-	mflo $v0 
+	multu $t9, $a0 #multiplying the character by the base number to a specific power
+	mflo $v0 #moves the answer to a register to be passed back to the function
 	jr $ra
