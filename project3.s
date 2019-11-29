@@ -141,7 +141,11 @@ Substring_Conversion:
 		not_a_digit:
 		
 Conversion_to_Byte:
-	
+	li $t7, 1
+	li $t8, 2
+	li $t9, 3
+	li $s1, 4
+	beq
 		
 
 		
