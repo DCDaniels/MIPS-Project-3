@@ -13,7 +13,6 @@ BadInput: .asciiz "NaN"				#Variable used to output Invalid input
 .globl main					#Allows main to be refrenced anywhere
 
 main:
-	
 	li $v0, 8				#Allows user to input
 	la $a0, InputVariable			#Saves input to  variable
 	li $a1, 1002				#Allows the input to be 1000 characters
@@ -25,6 +24,9 @@ main:
 	sw $t0, 4($sp)				#Adds the input string to the word
 	
 	jal StringProcessor			#Jump to the first subprogram A
+	
+	li $v0, 10
+	syscall
 	
 	StringProcessor:			#First subprogram that accepts all the strings and make it substrings
 		sw $ra, 0($sp)			#Store return address
@@ -65,6 +67,7 @@ main:
 		addi $s0, $s0, 1 
 		bgt $t7, $s1, Bad_Substring
 		addi $t3, $t3, 1
+		j LoopTwo
 		
 		
 	Bad_Substring:
@@ -72,12 +75,7 @@ main:
 		la $a0, BadInput 		#prints "NaN"
 		syscall
 		
-		
-	LSubstring: 				#Checks the last substring		
-		lw $ra, 0($sp) 			#Loads the return address
-		jr $ra 				#Returns to last call
-		
-		
+			
 	Move_to_next_Substring:
 		li $a0, ','
 		li $v0, 11 			#prints ","
@@ -110,6 +108,11 @@ main:
 	Not_Space:
 		bne $t4, $t9, Bad_Substring
 		j Trailing 
+		
+	
+	LSubstring: 				#Checks the last substring		
+		lw $ra, 0($sp) 			#Loads the return address
+		jr $ra 				#Returns to last call
 	
 		
 	Good_Strings:
